@@ -1,3 +1,13 @@
+from configuration import *
+from logging import error, exception
+import alpaca_trade_api as tradeapi
+from numpy.core.fromnumeric import mean
+import pandas as pd
+from time import time, sleep
+
+#three algorithmic trading bots, completely unalike in dignity/profitability
+
+
 class TenPercentBot:
     whitelist = []
     defaultlist = ['AAPL', 'GOOG','AMZN','BA','AA','JPM','JNJ','WMT','V','TSM','TSMC','MA','NVDA','TSLA']
