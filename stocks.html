@@ -1,71 +1,110 @@
 {% extends 'base.html' %}
 
+<!--
+    File to display tile-like summaries of stocks in a single view. 
+    This is part of the informative tools suite in the RT^2 product 
+    suite. This tool can use any data source from any Screener class.
+    Does not execute any trades. Presents the logic on which some 
+    trades are based in an easy to read and understand format.
+    
+    This template should be able to be extended for a version which
+    automates the trading signals with an easy web based ui. 
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
 {{ block content }}
-<div class="summary-container">
     {% if microeconomic_view == True %}
-        {% for summary in summaries %}
-            <div class="sumamry_tile">
-                {% if summary.daily_gains > 0 %}
-                <!--If there is growth in the past 24 hours, Make text green, show quote price-->
-                    <h3 class="">{{ summary.title }}: <span style='color: green;'>{{ summary.price }}</span></h3>
-                {% else %}
-                    <h3 class="">{{ summary.title }}: <span style='color: red;'>{{ summary.price }}</span></h3>
-                {% endif %}
-
-                {% if summary.daily_gains > 0 %}
-                <!--If there is daily growth, make green, show daily gain %-->
-                    <p class="">Daily Gain (%) : <span style='color: green;'>{{ summary.daily_gains }}</span></p>
-                {% else %}
-                    <p class="">Daily Gain (%) : <span style='color: red;'>{{ summary.daily_gains }}</span></p>
-                {% endif %}
-
-                {% if summary.weekly_gains > 0 %}
-                <!--If there is weekly growth, make green, show weekly %-->
-                    <p class="">Weekly Gain (%) : <span style='color: green;'>{{ summary.weekly_gains }}</span></p>
-                {% else %}
-                    <p class="">Weekly Gain (%) : <span style='color: red;'>{{ summary.weekly_gains }}</span></p>
-                {% endif %}
-
-                {% if summary.yearly_gains > 0 %}
-                <!--If there is annual gain, make green, display annual gain %-->
-                    <p class="">Yearly Gain (%) : <span style='color: green;'>{{ summary.yearly_gains }}</span></p>
-                {% else %}
-                    <p class="">Yearly Gain (%) : <span style='color: red;'>{{ summary.yearly_gains }}</span></p>
-                {% endif %}
-
-                {% for indicator_value in summary.indicators %}
-                <!-- 
-                    :indicator_value: tuple with a name value, numerical value, 
-                            and a boolean value or none, green if true, 
-                            red if false, gray if none. logic for assigning none, 
-                            true or false should match the basic 
-                            trading logic behind the use of that technical indicator. 
-                    :summary.indicators: list of indicator_value tuples.
-                -->
-                    {% if indicator_value[2] == True %}
-                        <p class="">{{ indicator[0] }}: <span style='color: green;'>{{ indicaor[1] }}</span></p>
-                    {% elif indicator_value[2] == None %}
-                        <p class="">{{ indicator[0] }}: <span style='color: gray;'>{{ indicaor[1] }}</span></p>               
-                    {% else %}
-                        <p class="">{{ indicator[0] }}: <span style='color: red;'>{{ indicaor[1] }}</span></p>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endfor %}
-    {% else %}
-    <!--
-        display macroeconomic information about the company 
-        in the summary format. Should contain some basic information
-        market cap, revenue, and dividend yield by default, 
-        and lke the microeconomic summary, should have the capacity
-        to integrate other macroeconomic trading indicators.
-    -->
-        <div class='summary-container'>
+        <div class="summary-container">
             {% for summary in summaries %}
-                <h3>{{ summary.title }}: {{ summary.industry }}</h3>
-                <p>Market Cap (Millions of USD): {{ (summary.market_cap / 1000000)|round(2) }}
-                <p>Annual Revenue {Millions of USD): {{ (summary.revenue / 1000000)|round(2) }}</p>
+                <div class="sumamry_tile">
+                    {% if summary.daily_gains > 0 %}
+                    <!--If there is growth in the past 24 hours, Make text green, show quote price-->
+                        <h3 class="">{{ summary.title }}: <span style='color: green;'>{{ summary.price }}</span></h3>
+                    {% else %}
+                        <h3 class="">{{ summary.title }}: <span style='color: red;'>{{ summary.price }}</span></h3>
+                    {% endif %}
+
+                    {% if summary.daily_gains > 0 %}
+                    <!--If there is daily growth, make green, show daily gain %-->
+                        <p class="">Daily Gain (%) : <span style='color: green;'>{{ summary.daily_gains }}</span></p>
+                    {% else %}
+                        <p class="">Daily Gain (%) : <span style='color: red;'>{{ summary.daily_gains }}</span></p>
+                    {% endif %}
+
+                    {% if summary.weekly_gains > 0 %}
+                    <!--If there is weekly growth, make green, show weekly %-->
+                        <p class="">Weekly Gain (%) : <span style='color: green;'>{{ summary.weekly_gains }}</span></p>
+                    {% else %}
+                        <p class="">Weekly Gain (%) : <span style='color: red;'>{{ summary.weekly_gains }}</span></p>
+                    {% endif %}
+
+                    {% if summary.yearly_gains > 0 %}
+                    <!--If there is annual gain, make green, display annual gain %-->
+                        <p class="">Yearly Gain (%) : <span style='color: green;'>{{ summary.yearly_gains }}</span></p>
+                    {% else %}
+                        <p class="">Yearly Gain (%) : <span style='color: red;'>{{ summary.yearly_gains }}</span></p>
+                    {% endif %}
+
+                    {% for indicator_value in summary.indicators %}
+                    <!-- 
+                        :indicator_value: tuple with a name value, numerical value, 
+                                and a boolean value or none, green if true, 
+                                red if false, gray if none. logic for assigning none, 
+                                true or false should match the basic 
+                                trading logic behind the use of that technical indicator. 
+                        :summary.indicators: list of indicator_value tuples.
+                    -->
+                        {% if indicator_value[2] == True %}
+                            <p class="">{{ indicator[0] }}: <span style='color: green;'>{{ indicaor[1] }}</span></p>
+                        {% elif indicator_value[2] == None %}
+                            <p class="">{{ indicator[0] }}: <span style='color: gray;'>{{ indicaor[1] }}</span></p>               
+                        {% else %}
+                            <p class="">{{ indicator[0] }}: <span style='color: red;'>{{ indicaor[1] }}</span></p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
-    {% endif %}
-</div>
+        {% else %}
+        <!--
+            display macroeconomic information about the company 
+            in the summary format. Should contain some basic information
+            market cap, revenue, and dividend yield by default, 
+            and lke the microeconomic summary, should have the capacity
+            to integrate other macroeconomic trading indicators.
+        -->
+            <div class='summary-container'>
+                {% for summary in summaries %}
+                    <div class="summary-tile">
+                        <h3>{{ summary.title }}: {{ summary.industry }}</h3>
+                        <p>Market Cap (Millions of USD): {{ (summary.market_cap / 1000000)|round(2) }}</p>
+                        <p>Annual Revenue (Millions of USD): {{ (summary.revenue / 1000000)|round(2) }}</p>
+                        <p>Dividend Yield: {{ (summary.dividend_yield)|round(2) }}</p>
+
+                        {% for macro_indicator in marco_indicators %} 
+                        <!--
+                            For each macroeconomic indicator, display the indicator and the value
+                            Due to the long term nature of fundamental analysis trading strategies,
+                            The values are NOT colored so as to discourage short term trading off 
+                            of long term principles.
+
+                            :macro_indicator: a tuple with two attributes: title and value
+                                the indicator title is what is displayed when the HTML is generated. The 
+                                indicator value is the value associated with it.
+                            
+                            :macro_indicators: list of :macro_indicator: attached as a summary class attribute.
+                                The summary class is the backbone of this entire operation, and serves as the
+                                middleman between the front end and the backend. ALL data should be passed
+                                through instances of the Summary class for this page.
+                        -->
+                            <p>{{ macro_indicator[0] }}: {{ macro_indicator[1] }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+{{ endblock }}
